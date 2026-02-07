@@ -1,7 +1,9 @@
-OPENCLAW.AI SETUP - FINAL PACKAGE
-==================================
+# 🤖 OpenClaw.ai Terraform
 
-Created: February 7, 2026
+## **TURN ANY COMPUTER INTO AN ACTUAL AI AGENT - 100% FREE**
+### Storage Required: 20GB minimum
+
+Created: February 7, 2026  
 Status: ✅ READY FOR DEPLOYMENT
 
 FILES CREATED:
