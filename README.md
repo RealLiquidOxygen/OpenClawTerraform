@@ -1,7 +1,8 @@
-# 🤖 OpenClaw.ai Terraform
+# 🤖 OpenClaw.ai Terraform - OpenClaw.ai With Expected Security
 
 ## **TURN ANY COMPUTER INTO AN ACTUAL AI AGENT - 100% FREE**
 ## ** ADDED MORE SECURITY TO OPENCLAW.AI TO PREVENT ATTACKS **
+## ** Paste the master prompt in VS Code - Claude Code Window And 'Begin Terraform' - it should terraform any virgin computer.
 ### Storage Required: 20GB minimum
 
 Created: February 7, 2026  
