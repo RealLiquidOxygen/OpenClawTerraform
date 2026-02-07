@@ -1,6 +1,7 @@
 # 🤖 OpenClaw.ai Terraform
 
 ## **TURN ANY COMPUTER INTO AN ACTUAL AI AGENT - 100% FREE**
+## ** ADDED MORE SECURITY TO OPENCLAW.AI TO PREVENT ATTACKS **
 ### Storage Required: 20GB minimum
 
 Created: February 7, 2026  
