@@ -1,0 +1,28 @@
+OpenClaw.ai Port Selection Tool
+=================================
+Timestamp: 2026-02-07 12:58:34
+
+Scanning for available ports...
+Range: 8200-8999 (user ports)
+
+✅ PORT SELECTION SUCCESSFUL
+============================
+
+SELECTED PORT: 8616
+
+Status: Available ✓
+Type: TCP (user port)
+
+NEXT STEPS:
+1. Use port 8616 for OpenClaw gateway
+2. When CloudBot asks you to change port, tell it: 8616
+3. In firewall rules, allow port: 8616
+
+CONFIGURATION COMMAND:
+Ask CloudBot: 'Set my gateway port to 8616'
+
+FIREWALL RULES:
+sudo ufw allow from [TAILSCALE_IP] to any port 8616
+
+Log created: output.log
+Generated: 2026-02-07 12:58:34

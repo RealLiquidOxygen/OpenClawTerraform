@@ -1,0 +1,344 @@
+# OpenClaw.ai Configuration Template with Failover Strategy
+# Copy this to ~/.openclaw/config.yml (macOS/Linux) or %APPDATA%\OpenClaw\config.yml (Windows)
+# 
+# This configuration enables automatic failover from Claude API to Llama 3
+# when API is down or tokens are depleted.
+
+# ============================================================================
+# CORE CONFIGURATION
+# ============================================================================
+
+port: 8200                    # Default, will be replaced with selected port
+api_key_source: "keychain"    # macOS: keychain, Linux: pass or file, Windows: credential_manager
+
+# ============================================================================
+# MODEL STRATEGY: Claude → Llama 3 Failover
+# ============================================================================
+
+model_strategy: "failover"    # Options: "failover", "primary_only", "load_balance"
+primary_model: "claude"       # Start with Claude API
+fallback_model: "llama3"      # Switch to Llama 3 if Claude fails
+
+# ============================================================================
+# API KEY CONFIGURATION
+# ============================================================================
+
+api_keys:
+  claude:
+    source: "keychain"        # Where API key is stored
+    env_var: "CLAUDE_API_KEY" # Or from environment variable
+    timeout_seconds: 30
+    retry_count: 2
+
+# ============================================================================
+# CLAUDE API SETTINGS
+# ============================================================================
+
+claude:
+  enabled: true
+  model: "claude-3-5-sonnet-20241022"  # Latest Claude model
+  max_tokens: 4096
+  temperature: 0.7
+  
+  # API health monitoring
+  health_check:
+    enabled: true
+    interval_seconds: 1800              # Check every 30 minutes
+    endpoint: "https://api.anthropic.com/v1/health"
+    timeout_seconds: 10
+    max_failures_before_fallback: 2
+  
+  # Token/rate limit handling
+  rate_limiting:
+    max_requests_per_minute: 60
+    handle_rate_limit: true
+    backoff_strategy: "exponential"     # Linear or exponential
+  
+  # Token depletion handling
+  token_depletion:
+    monitor: true
+    switch_to_fallback: true            # Switch to Llama 3 if tokens run out
+    alert_threshold_tokens: 1000        # Alert when tokens < 1000
+
+# ============================================================================
+# LLAMA 3 LOCAL MODEL SETTINGS
+# ============================================================================
+
+llama3:
+  enabled: true
+  model: "llama2"                       # Using llama2 as base
+  endpoint: "http://localhost:11434"    # Ollama default port
+  
+  # Ollama configuration
+  ollama:
+    auto_start: false                   # Don't auto-start Ollama (should be running)
+    check_before_use: true
+    timeout_seconds: 20
+
+# ============================================================================
+# FAILOVER STRATEGY
+# ============================================================================
+
+failover:
+  enabled: true
+  auto_switch_on_failure: true          # Automatically switch on Claude failure
+  auto_recovery_enabled: true           # Try to recover Claude periodically
+  
+  # Recovery check interval
+  recovery_check_interval: 1800         # Check every 30 minutes
+  
+  # Logging
+  log_model_switches: true
+  log_file: "~/.openclaw/logs/model_switches.log"
+  
+  # Behavior on failover
+  behavior:
+    preserve_context: true              # Try to keep conversation history
+    notify_user: true                   # Send WhatsApp notification
+    max_local_model_queries: 1000       # Before asking for API key
+  
+  # Degraded mode thresholds
+  degraded_mode:
+    response_timeout_seconds: 60        # Longer timeout for local model
+    max_retries: 1
+    quality_mode: "balanced"            # Standard Llama 3 responses
+
+# ============================================================================
+# WHATSAPP INTEGRATION
+# ============================================================================
+
+whatsapp:
+  enabled: true
+  connection_timeout: 30
+  message_queue_size: 1000
+  typing_indicator: true
+  
+  # Message handling
+  messages:
+    max_length: 4096
+    auto_split: true
+    rate_limit: 5                       # Messages per minute per user
+
+# ============================================================================
+# SECURITY HARDENING
+# ============================================================================
+
+security_hardening:
+  enabled: true
+  
+  # TLS/SSL
+  tls:
+    enabled: true
+    certificate: "~/.openclaw/certs/server.crt"
+    key: "~/.openclaw/certs/server.key"
+  
+  # Rate limiting
+  rate_limiting:
+    enabled: true
+    max_requests_per_minute: 100
+    max_requests_per_hour: 1000
+  
+  # Request validation
+  validate_input: true
+  max_request_size: 1048576            # 1MB
+  
+  # Brute force protection (handled by fail2ban)
+  brute_force_protection: true
+
+# ============================================================================
+# MONITORING & LOGGING
+# ============================================================================
+
+monitoring:
+  enabled: true
+  check_interval: 300                   # 5 minutes
+  
+  # Health checks
+  health_checks:
+    service_alive: true
+    port_listening: true
+    api_responding: true
+    models_available: true
+  
+  # Alerts
+  alerts:
+    service_down: true
+    api_failure: true
+    tokens_depleted: true
+    model_unavailable: true
+    high_latency: true
+  
+  # Alert thresholds
+  alert_thresholds:
+    response_time_ms: 5000              # Alert if response > 5 seconds
+    error_rate_percent: 5               # Alert if error rate > 5%
+
+# Logging
+logging:
+  level: "INFO"                         # DEBUG, INFO, WARNING, ERROR
+  format: "json"                        # json or text
+  output:
+    files:
+      main: "~/.openclaw/logs/openclaw.log"
+      startup: "~/.openclaw/logs/startup.log"
+      errors: "~/.openclaw/logs/errors.log"
+      model_switches: "~/.openclaw/logs/model_switches.log"
+    
+    # Log retention
+    retention:
+      max_size_mb: 100
+      max_age_days: 30
+
+# ============================================================================
+# DEVICE INTEGRATIONS (Alexa & Google)
+# ============================================================================
+
+device_integrations:
+  enabled: true
+  
+  # Amazon Alexa Integration
+  alexa:
+    enabled: true
+    auth:
+      account_linked: false              # Set to true after user signs in
+      refresh_token: ""                  # Stored securely in credential manager
+      access_token: ""                   # Temporary, refreshed automatically
+    
+    # Skill security
+    skill_security:
+      enabled: true                      # MANDATORY - enabled by default
+      scan_on_install: true              # Always scan before enabling new skill
+      auto_quarantine_threats: true      # Automatically quarantine dangerous skills
+      allowed_threat_level: "warning"    # "critical", "warning", or "none"
+      
+      # Threat detection patterns
+      threat_detection:
+        prompt_injection: true
+        command_injection: true
+        sql_injection: true
+        code_execution: true
+        hardcoded_credentials: true
+        unvalidated_input: true
+    
+    # Alexa-specific settings
+    devices: []                          # List of Alexa devices to control
+    routines_enabled: true               # Allow bot to trigger Alexa routines
+    smart_home_enabled: true             # Control smart home devices via Alexa
+    music_enabled: true                  # Play music/audio
+    notifications: true                  # Send Alexa notifications
+  
+  # Google Assistant Integration
+  google:
+    enabled: true
+    auth:
+      account_linked: false              # Set to true after user signs in
+      oauth_token: ""                    # Stored securely
+      refresh_token: ""                  # Refresh automatically
+    
+    # Skill security (same as Alexa)
+    action_security:
+      enabled: true                      # MANDATORY
+      scan_on_install: true
+      auto_quarantine_threats: true
+      allowed_threat_level: "warning"
+      
+      threat_detection:
+        prompt_injection: true
+        command_injection: true
+        sql_injection: true
+        code_execution: true
+        hardcoded_credentials: true
+        unvalidated_input: true
+    
+    # Google-specific settings
+    devices: []                          # Google Home/Nest devices
+    routines_enabled: true               # Google Home routines
+    smart_home_enabled: true             # Google Home Hub control
+    broadcast_enabled: true              # Broadcast to all devices
+    notifications: true                  # Send notifications
+
+# ============================================================================
+# FEATURES
+# ============================================================================
+
+features:
+  whatsapp: true
+  monitoring: true
+  security_hardening: true
+  api_fallback: true
+  auto_recovery: true
+  conversation_context: true            # Remember chat history
+  typing_indicators: true               # Show "bot is typing"
+  message_reactions: true               # React to messages
+  alexa_integration: true                # Amazon Alexa support
+  google_integration: true               # Google Assistant support
+  skill_security_scanning: true          # MANDATORY - built-in threat detection
+
+# ============================================================================
+# PERFORMANCE TUNING
+# ============================================================================
+
+performance:
+  # Concurrency
+  max_concurrent_chats: 50
+  worker_threads: 4
+  
+  # Caching
+  enable_cache: true
+  cache_ttl_seconds: 3600               # 1 hour
+  max_cache_size_mb: 100
+  
+  # Timeouts
+  request_timeout: 30                   # seconds
+  webhook_timeout: 10                   # seconds
+  model_timeout: 60                     # seconds (Llama 3 is slower)
+
+# ============================================================================
+# ENVIRONMENT-SPECIFIC OVERRIDES
+# ============================================================================
+
+# Uncomment to override for specific environments
+
+# production:
+#   logging:
+#     level: "WARNING"
+#   monitoring:
+#     check_interval: 60
+#   failover:
+#     recovery_check_interval: 600
+
+# development:
+#   logging:
+#     level: "DEBUG"
+#   failover:
+#     auto_recovery_enabled: false
+#   performance:
+#     max_concurrent_chats: 5
+
+# ============================================================================
+# NOTES
+# ============================================================================
+
+# FAILOVER BEHAVIOR:
+# 
+# 1. Claude API is primary model (preferred, lower latency, better quality)
+# 2. If Claude API fails or tokens depleted:
+#    - Switch to Llama 3 8B (local, ~4-5GB)
+#    - Bot continues responding without interruption
+# 3. Every 30 minutes:
+#    - Health check pings Claude API
+#    - If API is back → switches back to Claude
+#    - If API still down → remains on Llama 3
+# 4. Conversation context is preserved during failover
+# 5. User is notified via WhatsApp about model change (optional)
+#
+# STORAGE LOCATIONS:
+# - macOS: ~/.openclaw/ and ~/Library/Keychains/
+# - Linux: ~/.openclaw/ and ~/.password-store/ (or ~/.openclaw/api_key)
+# - Windows: %APPDATA%\OpenClaw\ and Windows Credential Manager
+#
+# LOGS:
+# - ~/.openclaw/logs/openclaw.log          (main activity)
+# - ~/.openclaw/logs/model_switches.log    (when model changes)
+# - ~/.openclaw/logs/errors.log            (error tracking)
+# - ~/.openclaw/logs/health_check.log      (health monitor output)
