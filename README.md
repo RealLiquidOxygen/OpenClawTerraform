@@ -74,7 +74,7 @@ OPTION 1: Manual Setup (Using openClawSetup.md as reference)
 4. Run verification tests
 
 OPTION 2: Claude Agent (RECOMMENDED)
-1. Open https://claude.ai
+1. Open https://claude.ai Or Claude chat in visual studio code
 2. Copy content of openClawSetup_ForClaudeAgent.md
 3. Paste into Claude with instruction: "Help me setup OpenClaw.ai following this guide"
 4. Claude walks you through every step
