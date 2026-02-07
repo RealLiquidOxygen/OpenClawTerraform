@@ -12,19 +12,29 @@ FILES CREATED:
 ===============
 
 1. openClawSetup.md (956 lines, 30KB)
+   
    └─ Complete reference guide with all technical details
+   
    └─ Includes security explanations, threat models, architecture
+   
    └─ Use for understanding the "why" behind each step
    
-2. openClawSetup_ForClaudeAgent.md (402 lines, 9.4KB)
+3. openClawSetup_ForClaudeAgent.md (402 lines, 9.4KB)
+   
    └─ Step-by-step instruction set for Claude agent
+   
    └─ Claude will execute this step-by-step with user
+   
    └─ This is what you give to Claude to guide the setup
+   
    └─ SIMPLIFIED: No encryption, no API rotation (per your request)
 
-3. HOW_TO_USE_WITH_CLAUDE.txt (106 lines, 3KB)
+5. HOW_TO_USE_WITH_CLAUDE.txt (106 lines, 3KB)
+   
    └─ Quick start guide for using the files
+   
    └─ Explains how to paste into Claude and what to expect
+   
    └─ Shows removed vs kept features
 
 WHAT CHANGED:
@@ -37,13 +47,21 @@ REMOVED (Per User Request):
 - Encrypted backup strategy (removed with encryption)
 
 KEPT (Essential Security):
+
 ✅ Tailscale VPN (free, invisible bot to internet)
+
 ✅ UFW Firewall (blocks unauthorized access)
+
 ✅ SSH Keys + Fail2Ban (brute force protection)
+
 ✅ Allow List (WhatsApp numbers only)
+
 ✅ Bot Self-Monitoring (alerts on suspicious activity)
+
 ✅ Rate Limiting (DoS protection)
+
 ✅ Port Hardening (custom port)
+
 ✅ Optional Llama 3 Model (token fallback)
 
 HOW TO USE:
@@ -77,12 +95,19 @@ CLAUDE'S ROLE:
 
 Claude will:
 ✅ Explain each step clearly
+
 ✅ Provide exact commands/links
+
 ✅ Wait for you to complete each step
+
 ✅ Verify each part works
+
 ✅ Troubleshoot if issues arise
+
 ✅ Guide through all 5 parts
+
 ✅ Confirm security complete
+
 ✅ Celebrate when done!
 
 EXPECTED TIMELINE:
@@ -97,17 +122,26 @@ FINAL CHECKLIST:
 ================
 
 Before using these files:
+
 ✅ Review HOW_TO_USE_WITH_CLAUDE.txt
+
 ✅ Understand what's included/excluded
+
 ✅ Have target computer ready
+
 ✅ Have Claude access (web or API)
 
 After running with Claude:
 ✅ All parts of openClawSetup_ForClaudeAgent.md completed
+
 ✅ Verification tests all passed
+
 ✅ Bot responds to you, not others
+
 ✅ Tailscale connected
+
 ✅ Firewall active
+
 ✅ Can message from anywhere
 
 SECURITY LEVEL ACHIEVED:
@@ -115,12 +149,19 @@ SECURITY LEVEL ACHIEVED:
 
 Your bot will be protected from:
 ✅ Internet port scanners
+
 ✅ Random hacker probes
+
 ✅ Unauthorized WhatsApp access
+
 ✅ Brute force login attempts
+
 ✅ DoS spam attacks
+
 ✅ Malicious skills
+
 ✅ Network tampering (via Tailscale)
+
 ✅ Physical access (optional - encryption removed per request)
 
 CONFIDENCE LEVEL: HIGH 🛡️
