@@ -255,7 +255,7 @@ sudo tailscale status
 ```powershell
 # Download from https://tailscale.com/download/windows
 # Run installer, or use package manager:
-winget install tailscale
+winget install tailscale.tailscale --source winget
 
 # Verify installation
 tailscale up

@@ -1,0 +1,34 @@
+update instruction withthis error - That Tailscale “Setup Failed – 0x80072f7d (Unspecified error)” on Windows is actually a very common installer failure, and it’s usually not Tailscale itself being broken. It’s almost always a Windows networking / security / certificate issue.The fix that works most of the time (Windows TLS reset)
+3️⃣ Reset Windows TLS & crypto settings
+
+This error often means Windows TLS is misconfigured.
+
+Press Win + R
+
+Type:
+
+inetcpl.cpl
+
+Go to Advanced tab
+
+Scroll to Security
+
+✅ Make sure these are checked:
+
+Use TLS 1.2
+
+Use TLS 1.3 (if present)
+
+❌ Uncheck:
+
+SSL 3.0
+
+TLS 1.0
+
+TLS 1.1
+
+Click Apply → OK
+
+Reboot
+
+Update

@@ -319,7 +319,7 @@ echo "Tailscale IP: $TAILSCALE_IP"
 
 **For Windows (PowerShell):**
 ```powershell
-winget install tailscale
+winget install tailscale.tailscale --source winget
 Start-Process tailscale up -ArgumentList "--shields-up", "--accept-risk=all" -Wait
 
 # Get Tailscale IP

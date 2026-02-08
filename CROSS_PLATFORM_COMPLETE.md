@@ -119,7 +119,7 @@ sudo systemctl enable --now ollama
 winget install openclaw
 
 # Install Tailscale
-winget install tailscale
+winget install tailscale.tailscale --source winget
 # OR download from https://tailscale.com/download/windows
 
 # Install Ollama
@@ -326,7 +326,7 @@ powershell -ExecutionPolicy Bypass -File select_openclaw_port.ps1
 # Download from https://openclaw.ai/download or use winget
 
 # 3. Install Tailscale
-winget install tailscale
+winget install tailscale.tailscale --source winget
 
 # 4. Continue with Claude guide (PART 1 onwards)
 ```
