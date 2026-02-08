@@ -129,7 +129,7 @@ wsl bash -c "curl -fsSL https://openclaw.ai/install.sh | bash"
 OpenClaw will ask about AI model:
 - Default: Gemini 2.5 Flash (instant, free tier)
 - Alternative: Claude (if you have API key)
-- Local: Llama 3 8B (runs on your computer, no API calls)
+- Local: Llama 3.1 8B (runs on your computer, no API calls, supports tools)
 
 **Claude's role:**
 1. Explain each option
@@ -439,16 +439,18 @@ net accounts /lockoutduration:30 /lockoutthreshold:3 /lockoutwindow:10
 
 ### Install Local Llama Model (Optional)
 
+**IMPORTANT:** Use Llama 3.1 (not Llama 3) - OpenClaw requires tool/function calling support which only Llama 3.1+ provides.
+
 **macOS:**
 ```bash
 # Install Ollama
 brew install ollama
 
-# Download Llama 3 8B (~4-5GB)
-ollama pull llama3:8b
+# Download Llama 3.1 8B (~8GB, supports tool calling)
+ollama pull llama3.1:8b
 
 # Test it
-ollama run llama3:8b "What is 2+2?"
+ollama run llama3.1:8b "What is 2+2?"
 ```
 
 **Linux (Ubuntu/Debian):**
@@ -456,11 +458,11 @@ ollama run llama3:8b "What is 2+2?"
 # Install Ollama
 curl -fsSL https://ollama.ai/install.sh | sh
 
-# Download Llama 3 8B (~4-5GB)
-ollama pull llama3:8b
+# Download Llama 3.1 8B (~8GB, supports tool calling)
+ollama pull llama3.1:8b
 
 # Test it
-ollama run llama3:8b "What is 2+2?"
+ollama run llama3.1:8b "What is 2+2?"
 ```
 
 **Linux (Fedora/RHEL):**
@@ -471,11 +473,11 @@ sudo dnf install -y ollama
 # Start service
 sudo systemctl enable --now ollama
 
-# Download Llama 3 8B (~4-5GB)
-ollama pull llama3:8b
+# Download Llama 3.1 8B (~8GB, supports tool calling)
+ollama pull llama3.1:8b
 
 # Test it
-ollama run llama3:8b "What is 2+2?"
+ollama run llama3.1:8b "What is 2+2?"
 ```
 
 **Windows:**
@@ -572,7 +574,7 @@ INSTALLATION COMPLETE WHEN:
 ✅ Tailscale failover tested
 
 OPTIONAL:
-✅ Llama 3 model installed (for token overflow fallback)
+✅ Llama 3.1 model installed (tool-capable, for local/free operation)
 ```
 
 ---
